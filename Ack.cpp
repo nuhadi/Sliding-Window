@@ -15,17 +15,14 @@ private:
     int nextSeqNum;
     char checksum;
 public:
-    Ack(char ack, int nextSeqNum, char checksum) {
-        this->ack = ack;
-        this->nextSeqNum = nextSeqNum;
-        this->checksum = checksum;
-    }
-
-    ~Ack() = default;
-
-    // operations
-
-    // bool isValid () {
-    //
-    // }    
+    Ack(char ack, int nextSeqNum, char checksum);
+    ~Ack();
 };
+
+Ack::Ack(char ack, int nextSeqNum, char checksum) {
+    this->ack = ack;
+    this->nextSeqNum = nextSeqNum;
+    this->checksum = checksum;
+}
+
+Ack::~Ack() {}
