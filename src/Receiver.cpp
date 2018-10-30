@@ -26,7 +26,10 @@ int main(int argc, char* argv[])
     int nBuff = charToInt(argv[3]);
     int port = charToInt(argv[4]);
     struct sockaddr_in servAddr, cliAddr;
+
+    // init buffer and message
     char buffer[MAXLINE];
+    char* ack = (char*)"Pura-puranya ack";
 
     // creating socket file descriptor
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -44,21 +47,22 @@ int main(int argc, char* argv[])
     servAddr.sin_port = htons(port);
 
     // binding socket with server addrress
-    if (bind(sockfd, (const struct sockaddr *) &servAddr,  sizeof(servAddr)) < 0) {
+    if ((bind(sockfd, (const struct sockaddr *) &servAddr,  sizeof(servAddr))) < 0) {
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
 
-    // recvfrom
-    // int len, n;
-    // n = recvfrom(sockfd, (char*) buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliAddr, &len);
+    while (1)
+    {
+        int n;
+        socklen_t nCli;
+        n = recvfrom(sockfd, (char*) buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliAddr, &nCli);
+        buffer[n] = '\0';
+        printf("Client : %s\n", buffer);
+        sendto(sockfd, (const char*) ack, strlen(ack), 0, (const struct sockaddr *) &cliAddr, nCli);
+        printf("Ack sent \n");
+    }
 
-    // buffer[n] = '\0';
-
-    // wait
-    // process request
-    // send/recv
-    // shutdown
-    // close
+    close(sockfd);
     return 0;
 }
