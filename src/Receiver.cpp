@@ -7,15 +7,16 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <iostream>
 
 #include "Util.cpp"
 using namespace std;
 
-int main(int argc, char* argv[])
-{
+#define MAXLINE 1024
+
+int main(int argc, char* argv[]) {
     if (argc < 5) {
-        perror("wrong input");
-        exit(EXIT_FAILURE);
+        die("wrong input");
     }
 
     // read from argument
@@ -24,10 +25,6 @@ int main(int argc, char* argv[])
     int nBuff = charToInt(argv[3]);
     int port = charToInt(argv[4]);
     struct sockaddr_in recvAddr, sendAddr;
-
-    // init buffer and message
-    char buffer[MAXLINE];
-    char* ack = (char*)"Pura-puranya ack";
 
     // creating socket file descriptor
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -51,11 +48,20 @@ int main(int argc, char* argv[])
     }
 
     while (1) {
+        // recv from client (Packet)
         int n;
         socklen_t nCli;
-        n = recvfrom(sockfd, (char*) buffer, nBuff, MSG_WAITALL, (struct sockaddr *) &sendAddr, &nCli);
-        buffer[n] = '\0';
-        printf("Client : %s\n", buffer);
+        char* raw_packet = new char [MAXLINE];
+        n = recvfrom(sockfd, raw_packet, MAXLINE, MSG_WAITALL, (struct sockaddr *) &sendAddr, &nCli);
+        for(size_t i = 0; i < n; i++)
+        {
+            cout << raw_packet[i];
+        }
+
+        // init buffer and message (ACK)
+        char* ack = (char*) "Pura-puranya ack";
+
+        // send to client
         sendto(sockfd, (const char*) ack, strlen(ack), 0, (const struct sockaddr *) &sendAddr, nCli);
         printf("Ack sent \n");
     }
