@@ -1,19 +1,20 @@
 #include <iostream>
 #include <stdlib.h>
+#include <thread>
+#include <mutex>
+#include <stdio.h>
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <stdexcept>
 #include <unistd.h>
+
 #include "Packet.cpp"
 #include "Ack.cpp"
-using namespace std;
+#include "util.cpp"
 
-void die(string msg) {
-  cerr << msg << endl;
-  exit(1);
-}
+using namespace std;
 
 int main(int argc, char** argv) {
   if (argc < 6) die("<filename> <windowsize> <buffersize> <destination_ip> <destination_port>");
