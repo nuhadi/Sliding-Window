@@ -11,8 +11,6 @@
 #include "Util.cpp"
 using namespace std;
 
-#define MAXLINE 1024
-
 int main(int argc, char* argv[])
 {
     if (argc < 5) {
@@ -25,7 +23,7 @@ int main(int argc, char* argv[])
     int rWS = charToInt(argv[2]);
     int nBuff = charToInt(argv[3]);
     int port = charToInt(argv[4]);
-    struct sockaddr_in servAddr, cliAddr;
+    struct sockaddr_in recvAddr, sendAddr;
 
     // init buffer and message
     char buffer[MAXLINE];
@@ -38,28 +36,27 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    memset(&servAddr, 0, sizeof(servAddr));
-    memset(&cliAddr, 0, sizeof(cliAddr));
+    memset(&recvAddr, 0, sizeof(recvAddr));
+    memset(&sendAddr, 0, sizeof(sendAddr));
 
     // filling server information
-    servAddr.sin_family = AF_INET;
-    servAddr.sin_addr.s_addr = INADDR_ANY;
-    servAddr.sin_port = htons(port);
+    recvAddr.sin_family = AF_INET;
+    recvAddr.sin_addr.s_addr = INADDR_ANY;
+    recvAddr.sin_port = htons(port);
 
     // binding socket with server addrress
-    if ((bind(sockfd, (const struct sockaddr *) &servAddr,  sizeof(servAddr))) < 0) {
+    if ((bind(sockfd, (const struct sockaddr *) &recvAddr,  sizeof(recvAddr))) < 0) {
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
 
-    while (1)
-    {
+    while (1) {
         int n;
         socklen_t nCli;
-        n = recvfrom(sockfd, (char*) buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliAddr, &nCli);
+        n = recvfrom(sockfd, (char*) buffer, nBuff, MSG_WAITALL, (struct sockaddr *) &sendAddr, &nCli);
         buffer[n] = '\0';
         printf("Client : %s\n", buffer);
-        sendto(sockfd, (const char*) ack, strlen(ack), 0, (const struct sockaddr *) &cliAddr, nCli);
+        sendto(sockfd, (const char*) ack, strlen(ack), 0, (const struct sockaddr *) &sendAddr, nCli);
         printf("Ack sent \n");
     }
 
