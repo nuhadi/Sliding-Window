@@ -1,4 +1,3 @@
-<<<<<<< HEAD:Ack.cpp
 /* Sliding Window Acknowledgement
 13516120 Nuha Adinata
 13516135 Untung Tanujaya
@@ -7,8 +6,6 @@
 
 #define ACKLEN 6
 
-=======
->>>>>>> fc2c6938548798ad25cf1128b93819f11c267461:src/Ack.cpp
 #include <iostream>
 using namespace std;
 
@@ -33,10 +30,14 @@ Ack::Ack(char ack, int nextSeqNum, char checksum) {
 Ack::~Ack() {}
 
 char* Ack::getRaw() {
+    // make array raw from ack info
     char* raw = new char [ACKLEN + 1];
     raw[ACKLEN] = '\0';
-    raw[0] = ack;
-    
-    raw[5] = checksum;
+    raw[0] = this->ack;
+    raw[1] = (char) this->nextSeqNum/1000;
+    raw[2] = (char) (this->nextSeqNum%1000)/100;
+    raw[3] = (char) (this->nextSeqNum%100)/10;
+    raw[4] = (char) (this->nextSeqNum%10);
+    raw[5] = this->checksum;
     return raw;
 }
