@@ -1,11 +1,3 @@
-/* Sliding Window Acknowledgement
-13516120 Nuha Adinata
-13516135 Untung Tanujaya
-13516141 Ilham Wahabi
-
-
-*/
-
 #include <iostream>
 using namespace std;
 
@@ -21,11 +13,5 @@ public:
         this->checksum = checksum;
     }
 
-    ~Ack() = default;
-
-    // operations
-
-    // bool isValid () {
-    //
-    // }    
+    ~Ack() {};
 };
