@@ -43,8 +43,7 @@ int main(int argc, char* argv[]) {
 
     // binding socket with server addrress
     if ((bind(sockfd, (const struct sockaddr *) &recvAddr,  sizeof(recvAddr))) < 0) {
-        perror("bind failed");
-        exit(EXIT_FAILURE);
+        die("bind failed");
     }
 
     while (1) {
@@ -62,8 +61,10 @@ int main(int argc, char* argv[]) {
         char* ack = (char*) "Pura-puranya ack";
 
         // send to client
-        sendto(sockfd, (const char*) ack, strlen(ack), 0, (const struct sockaddr *) &sendAddr, nCli);
-        printf("Ack sent \n");
+        if ((sendto(sockfd, (const char*) ack, strlen(ack), 0, (const struct sockaddr *) &sendAddr, nCli)) < 0) {
+            die("failed to send message")
+        }
+        cout << "Ack sent" << endl;
     }
 
     close(sockfd);
