@@ -1,21 +1,21 @@
-#include <iostream>;
-#include <string>;
+#include <iostream>
+#include <string>
 using namespace std;
 
 class Packet {
   private:
-    char SOH;
+    char soh;
     int sequenceNumber;
     int dataLength;
     string data;
     int checksum;
 
   public:
-    Packet(char SOH, int sequenceNumber, string data, int checksum);
+    Packet(char soh, int sequenceNumber, string data, int checksum);
 };
 
-Packet::Packet(char SOH, int sequenceNumber, string data, int checksum) {
-  this->SOH = SOH;
+Packet::Packet(char soh, int sequenceNumber, string data, int checksum) {
+  this->soh = soh;
   this->sequenceNumber = sequenceNumber;
   this->data = data;
   this->checksum = checksum;

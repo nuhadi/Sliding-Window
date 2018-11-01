@@ -1,3 +1,4 @@
+<<<<<<< HEAD:Ack.cpp
 /* Sliding Window Acknowledgement
 13516120 Nuha Adinata
 13516135 Untung Tanujaya
@@ -6,6 +7,8 @@
 
 #define ACKLEN 6
 
+=======
+>>>>>>> fc2c6938548798ad25cf1128b93819f11c267461:src/Ack.cpp
 #include <iostream>
 using namespace std;
 
