@@ -12,13 +12,9 @@
 
 #include "Packet.cpp"
 #include "Ack.cpp"
+#include "util.cpp"
 
 using namespace std;
-
-void die(string msg) {
-  cerr << msg << endl;
-  exit(1);
-}
 
 int main(int argc, char** argv) {
   if (argc < 6) die("<filename> <windowsize> <buffersize> <destination_ip> <destination_port>");
