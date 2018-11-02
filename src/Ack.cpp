@@ -7,24 +7,27 @@
 #define ACKLEN 6
 
 #include <iostream>
+#include <stdlib.h>
+#include "util.cpp"
 using namespace std;
 
 class Ack {
 private:
     char ack;
-    int nextSeqNum;
-    char checksum;
+    uint32_t nextSeqNum;
+    unsigned char checksum;
 public:
-    Ack(char ack, int nextSeqNum, char checksum);
+    Ack(char ack, int nextSeqNum, bool error);
     ~Ack();
     // operations
     char* getRaw();
+    void generateChecksum();
 };
 
-Ack::Ack(char ack, int nextSeqNum, char checksum) {
-    this->ack = ack;
+Ack::Ack(char ack, int nextSeqNum, bool error) {
+    this->ack = error ? 0x0, 0x1;
     this->nextSeqNum = nextSeqNum;
-    this->checksum = checksum;
+    this->checksum = ;
 }
 
 Ack::~Ack() {}
@@ -34,10 +37,7 @@ char* Ack::getRaw() {
     char* raw = new char [ACKLEN + 1];
     raw[ACKLEN] = '\0';
     raw[0] = this->ack;
-    raw[1] = (char) this->nextSeqNum/1000;
-    raw[2] = (char) (this->nextSeqNum%1000)/100;
-    raw[3] = (char) (this->nextSeqNum%100)/10;
-    raw[4] = (char) (this->nextSeqNum%10);
+    memcpy(raw + 1, &this->nextSeqNum, 4);
     raw[5] = this->checksum;
     return raw;
 }

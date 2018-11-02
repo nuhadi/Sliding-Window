@@ -1,3 +1,0 @@
-ini contoh data yang dikirim
-ada savefile
-ada receivefile
